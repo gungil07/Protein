@@ -39,7 +39,7 @@ def fetch_released_pdb_ids(since_date, output_csv):
     return pdb_ids
 
 def main():
-    since_date = input("📅 Enter a release date (YYYY-MM-DD): ").strip()
+    since_date = input("Enter a release date (YYYY-MM-DD): ").strip()
     try:
         datetime.strptime(since_date, "%Y-%m-%d")
     except ValueError:
