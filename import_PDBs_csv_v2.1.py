@@ -23,7 +23,7 @@ def fetch_released_pdb_ids(since_date, output_csv):
 
     response = requests.post(url, json=query)
     if response.status_code != 200:
-        print(f"❌ Failed to fetch from RCSB ({response.status_code})")
+        print(f"Failed to fetch from RCSB ({response.status_code})")
         return []
 
     data = response.json()
@@ -35,7 +35,7 @@ def fetch_released_pdb_ids(since_date, output_csv):
         for pid in pdb_ids:
             writer.writerow([pid])
 
-    print(f"✅ {len(pdb_ids)} newly released PDB entries saved to '{output_csv}'")
+    print(f" {len(pdb_ids)} newly released PDB entries saved to '{output_csv}'")
     return pdb_ids
 
 def main():
@@ -43,7 +43,7 @@ def main():
     try:
         datetime.strptime(since_date, "%Y-%m-%d")
     except ValueError:
-        print("❌ Invalid date format. Use YYYY-MM-DD.")
+        print("Invalid date format. Use YYYY-MM-DD.")
         return
 
     today_str = datetime.now().strftime('%Y-%m-%d')
