@@ -23,12 +23,12 @@ def fetch_released_pdb_ids(since_date):
 
     response = requests.post(url, json=query)
     if response.status_code != 200:
-        print(f"❌ Failed to fetch from RCSB ({response.status_code})")
+        print(f"Failed to fetch from RCSB ({response.status_code})")
         return []
 
     data = response.json()
     pdb_ids = [item["identifier"] for item in data.get("result_set", [])]
-    print(f"✅ Found {len(pdb_ids)} PDB entries since {since_date}")
+    print(f"Found {len(pdb_ids)} PDB entries since {since_date}")
     return pdb_ids
 
 
@@ -50,7 +50,7 @@ def fetch_metadata(pdb_id):
     url = f"https://data.rcsb.org/rest/v1/core/entry/{pdb_id}"
     response = requests.get(url)
     if response.status_code != 200:
-        print(f"⚠️ Failed to fetch metadata for {pdb_id}")
+        print(f"Failed to fetch metadata for {pdb_id}")
         return None
 
     data = response.json()
@@ -63,7 +63,7 @@ def fetch_metadata(pdb_id):
     resolution = data.get("rcsb_entry_info", {}).get("resolution_combined", [None])
     resolution_value = resolution[0] if resolution else None
 
-    # ➕ Get UniProt IDs
+    # Get UniProt IDs
     uniprot_ids = get_uniprot_ids_from_pdb(pdb_id)
     uniprot_str = ", ".join(uniprot_ids) if uniprot_ids else ""
 
@@ -88,11 +88,11 @@ def save_to_csv(pdb_data_list, output_file):
 
 
 def main():
-    since_date = input("📅 Enter a release date (YYYY-MM-DD): ").strip()
+    since_date = input("Enter a release date (YYYY-MM-DD): ").strip()
     try:
         datetime.strptime(since_date, "%Y-%m-%d")
     except ValueError:
-        print("❌ Invalid date format. Use YYYY-MM-DD.")
+        print("Invalid date format. Use YYYY-MM-DD.")
         return
 
     pdb_ids = fetch_released_pdb_ids(since_date)
@@ -101,7 +101,7 @@ def main():
 
     output_data = []
     for i, pdb_id in enumerate(pdb_ids, 1):
-        print(f"🔍 Fetching metadata for {pdb_id} ({i}/{len(pdb_ids)})...")
+        print(f"Fetching metadata for {pdb_id} ({i}/{len(pdb_ids)})...")
         metadata = fetch_metadata(pdb_id)
         if metadata:
             output_data.append(metadata)
